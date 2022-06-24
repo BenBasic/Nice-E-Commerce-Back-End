@@ -13,7 +13,7 @@ Category.init(
       allowNull: false,
       // Setting primaryKey property to true so that the id value will be the primary key for Category table
       primaryKey: true,
-      // Setting autoIncrement property to true so that id value will increment for each itemin the Category table
+      // Setting autoIncrement property to true so that id value will increment for each item in the Category table
       autoIncrement: true
     },
     category_name: {
@@ -32,4 +32,5 @@ Category.init(
   }
 );
 
+// Exports Category module for use in other files
 module.exports = Category;
