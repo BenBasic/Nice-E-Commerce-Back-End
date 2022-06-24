@@ -5,15 +5,55 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
+  // Returns the table rows from Product as an array of objects while including category_name from the Category table and tag_name from the Tag table
+  Product.findAll(
+    {
+      include: [
+        {
+          model: Category,
+          attributes: ['category_name']
+        },
+        {
+          model: Tag,
+          attributes: ['tag_name']
+        }
+      ]
+    }
+  )
+    .then(productData => res.json(productData)) // Sends a JSON response of productData
+    .catch(err => {
+      // Logs the error if it occurs
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  // Returns a single table row from Product's id row, also includes category_name from the Category Table and tag_name from the Tag table
+  Product.findOne({
+    where: {
+      // Requesting the id parameter from the requested URL
+      id: req.params.id
+    },
+    include: [{
+      model: Category,
+      attributes: ['category_name']
+    },
+    {
+      model: Tag,
+      attributes: ['tag_name']
+    }
+    ]
+  })
+    .then(productData => res.json(productData)) // Sends a JSON response of productData
+    .catch(err => {
+      // Logs the error if it occurs
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
+
 
 // create new product
 router.post('/', (req, res) => {
@@ -90,7 +130,28 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  // Deletes a product by its id value
+  Product.destroy({
+    where: {
+      // Requesting the id parameter from the requested URL
+      id: req.params.id
+    }
+  })
+    .then(productData => {
+      // If the product id doesnt exist then it will log an error
+      if (!productData) {
+        res.status(404).json({ message: 'No product with this ID exits' });
+        return;
+      }
+      // Sends a JSON response of categoryData
+      res.json(productData);
+    })
+    .catch(err => {
+      // If there is an error, it will log an error
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
+// Exports as a module to be used in other files
 module.exports = router;

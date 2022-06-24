@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
       }
     }
   )
-    .then(categoryData => res.json(categoryData))
+    .then(categoryData => res.json(categoryData)) // Sends a JSON response of categoryData
     .catch(err => {
       // Logs the error if it occurs
       console.log(err);
@@ -33,7 +33,7 @@ router.get('/:id', (req, res) => {
       attributes: ['category_id']
     }
   })
-    .then(categoryData => res.json(categoryData))
+    .then(categoryData => res.json(categoryData)) // Sends a JSON response of categoryData
     .catch(err => {
       // Logs the error if it occurs
       console.log(err);
